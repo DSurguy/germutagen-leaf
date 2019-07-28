@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import imgRedSquare from './assets/red-square.png';
+import Map1 from './staticMaps/1';
 
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
@@ -11,24 +11,20 @@ const app = new PIXI.Application();
 document.body.appendChild(app.view);
 
 // load the texture we need
-app.loader.add('bunny', imgRedSquare).load((loader, resources) => {
-  // This creates a texture from a 'bunny.png' image
-  const bunny = new PIXI.Sprite(resources.bunny.texture);
+app.loader
+.add('tiles', './assets/tiles.json')
+.load((loader, resources) => {
+  const sheet = resources.tiles.spritesheet
+  const emptyTile = new PIXI.Sprite(sheet.textures['tile.png']);
 
-  // Setup the position of the bunny
-  bunny.x = app.renderer.width / 2;
-  bunny.y = app.renderer.height / 2;
+  // Setup the position of the emptyTile
+  emptyTile.x = app.renderer.width / 2;
+  emptyTile.y = app.renderer.height / 2;
 
   // Rotate around the center
-  bunny.anchor.x = 0.5;
-  bunny.anchor.y = 0.5;
+  emptyTile.anchor.x = 0.5;
+  emptyTile.anchor.y = 0.5;
 
-  // Add the bunny to the scene we are building
-  app.stage.addChild(bunny);
-
-  // Listen for frame updates
-  app.ticker.add(() => {
-    // each frame we spin the bunny around a bit
-    bunny.rotation += 0.01;
-  });
+  // Add the emptyTile to the scene we are building
+  app.stage.addChild(emptyTile);
 });

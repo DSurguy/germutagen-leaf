@@ -1,5 +1,8 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin')
+
+const distFolder = path.join(__dirname, 'dist')
 
 module.exports = {
   entry: path.resolve(__dirname, 'src/index.js'),
@@ -10,6 +13,13 @@ module.exports = {
   module: {
     rules: [
       {
+        type: 'javascript/auto',
+        test: /\.(json)$/, //Yes, we import json files as direct references because GAMES
+        use: [
+          'file-loader'
+        ]
+      },
+      {
         test: /\.(png|svg|jpg|gif)$/,
         use: [
           'file-loader'
@@ -17,13 +27,23 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: ['.js', '.json', '.css', '.png']
+  },
   devtool: 'eval-source-map',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: distFolder,
     compress: true,
     port: 9000
   },
   plugins: [
-    new HtmlWebpackPlugin({template: './src/index.html'})
+    new HtmlWebpackPlugin({template: './src/index.html'}),
+    new CopyPlugin([
+      {
+        context: './src/assets',
+        from: '**/*',
+        to: 'assets'
+      }
+    ])
   ]
 };
