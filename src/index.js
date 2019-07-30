@@ -1,21 +1,11 @@
 import * as PIXI from 'pixi.js'
 import map1 from './staticMaps/1';
 
-// The application will create a renderer using WebGL, if possible,
-// with a fallback to a canvas render. It will also setup the ticker
-// and the root stage PIXI.Container
-const app = new PIXI.Application();
+const framesets = {}
 
-// The application will create a canvas element for you that you
-// can then insert into the DOM
-document.body.appendChild(app.view);
-
-// load the texture we need
-app.loader
-.add('tiles', './assets/tiles.json')
-.load((loader, resources) => {
-  transformMapIntoStage(map1.tiles, app.stage, resources)
-});
+function initStatics(){
+  buildFramesets();
+}
 
 function transformMapIntoStage(mapTiles, stage, resources){
   const sheet = resources.tiles.spritesheet;
@@ -56,12 +46,61 @@ function transformMapIntoStage(mapTiles, stage, resources){
 
 function getGridTileSprite(tileType, spritesheet) {
   switch( tileType ){
-    case '=': return new PIXI.Sprite(spritesheet.textures['wall-tile.png']);
-    case '1': return new PIXI.Sprite(spritesheet.textures['blue-slot-tile.png']);
-    case '2': return new PIXI.Sprite(spritesheet.textures['green-slot-tile.png']);
-    case '3': return new PIXI.Sprite(spritesheet.textures['purple-slot-tile.png']);
-    case '4': return new PIXI.Sprite(spritesheet.textures['orange-slot-tile.png']);
+    case '=': return new PIXI.Sprite(spritesheet.textures[getFrame('tiles', 'wall')]);
+    case '1': return new PIXI.Sprite(spritesheet.textures[getFrame('tiles', 'blue-slot-fill')]);
+    case '2': return new PIXI.Sprite(spritesheet.textures[getFrame('tiles', 'green-slot-fill')]);
+    case '3': return new PIXI.Sprite(spritesheet.textures[getFrame('tiles', 'purple-slot-fill')]);
+    case '4': return new PIXI.Sprite(spritesheet.textures[getFrame('tiles', 'orange-slot-fill')]);
     case 'o':
-    default: return new PIXI.Sprite(spritesheet.textures['tile.png']);
+    default: return new PIXI.Sprite(spritesheet.textures[getFrame('tiles', 'tile')]);
   }
 }
+
+const tilesFrames = [
+  'wall',
+  'tile',
+  'orange-slot',
+  'blue-slot',
+  'purple-slot',
+  'green-slot',
+  'orange-slot-fill',
+  'blue-slot-fill',
+  'purple-slot-fill',
+  'green-slot-fill',
+  'teal-orb',
+  'red-orb',
+  'purple-orb',
+  'gray-orb',
+  'yellow-orb'
+]
+
+function buildFramesets(){
+  framesets.tiles = tilesFrames.reduce((map, frame, frameIndex) => {
+    map[frame] = frameIndex
+    return map
+  }, {})
+}
+
+function getFrame(frameset, framename) {
+  return `${frameset}${framesets[frameset][framename]}.png`
+}
+
+/**
+ *  RUNTIME
+ */
+initStatics();
+// The application will create a renderer using WebGL, if possible,
+// with a fallback to a canvas render. It will also setup the ticker
+// and the root stage PIXI.Container
+const app = new PIXI.Application();
+
+// The application will create a canvas element for you that you
+// can then insert into the DOM
+document.body.appendChild(app.view);
+
+// load the texture we need
+app.loader
+.add('tiles', './assets/tiles.json')
+.load((loader, resources) => {
+  transformMapIntoStage(map1.tiles, app.stage, resources)
+});
