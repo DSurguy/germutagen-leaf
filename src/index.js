@@ -1,10 +1,19 @@
 import * as PIXI from 'pixi.js'
 import map1 from './staticMaps/1';
+import Keyboard from './keyboard.js'
 
 const framesets = {}
 
 function initStatics(){
   buildFramesets();
+}
+
+function initInterface(){
+  const thisKeyboard = new Keyboard();
+  thisKeyboard.getKey('ArrowUp').on("keydown", () => console.log("Moving Up"))
+  thisKeyboard.getKey('ArrowDown').on("keydown", () => console.log("Moving Down"))
+  thisKeyboard.getKey('ArrowLeft').on("keydown", () => console.log("Moving Left"))
+  thisKeyboard.getKey('ArrowRight').on("keydown", () => console.log("Moving Right"))
 }
 
 function transformMapIntoStage(mapTiles, stage, resources){
@@ -85,10 +94,15 @@ function getFrame(frameset, framename) {
   return `${frameset}${framesets[frameset][framename]}.png`
 }
 
+function move(){
+  
+}
+
 /**
  *  RUNTIME
  */
 initStatics();
+initInterface();
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container
@@ -103,4 +117,8 @@ app.loader
 .add('tiles', './assets/tiles.json')
 .load((loader, resources) => {
   transformMapIntoStage(map1.tiles, app.stage, resources)
+
+  app.ticker.add(function(delta) {
+    
+  });
 });
