@@ -3,7 +3,12 @@ const KEY_CODES = {}
 class KeyManager{
   constructor(){
     this.upHandlers = [];
-    this.downHandlers = []
+    this.downHandlers = [];
+    this.state = {
+      isDown: false,
+      downStartTime: 0,
+      lastDownDuration: 0
+    }
   }
   
   on(eventType, handler){
@@ -32,13 +37,18 @@ class KeyManager{
 
   trigger(event){
     if( event.type === 'keydown' ){
+      this.state.isDown = true;
+      this.state.downStartTime = Date.now();
       for( let handler of this.downHandlers ){
-        handler(event);
+        handler(event, this.state);
       }
     }
     else{
+      this.state.isDown = false;
+      this.state.lastDownDuration = Date.now() - this.state.downStartTime;
+      this.state.downStartTime = 0;
       for( let handler of this.upHandlers ){
-        handler(event);
+        handler(event, this.state);
       }
     }
   }
@@ -65,3 +75,5 @@ export default class Keyboard {
     return this.keyManagers[key];
   }
 }
+
+export const sharedKeyboard = new Keyboard();
