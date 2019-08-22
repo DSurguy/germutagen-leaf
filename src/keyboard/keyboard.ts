@@ -1,14 +1,16 @@
 const KEY_CODES = {}
 
 class KeyManager{
-  constructor(){
-    this.upHandlers = [];
-    this.downHandlers = [];
-    this.state = {
-      isDown: false,
-      downStartTime: 0,
-      lastDownDuration: 0
-    }
+  upHandlers = [];
+  downHandlers = [];
+  state = {
+    isDown: false,
+    downStartTime: 0,
+    lastDownDuration: 0
+  }
+
+  constructor(key){
+    //do nothing
   }
   
   on(eventType, handler){
@@ -55,8 +57,9 @@ class KeyManager{
 }
 
 export default class Keyboard {
+  keyManagers = {};
+
   constructor(){
-    this.keyManagers = {};
     document.addEventListener("keydown", this._handleKeyEvent.bind(this))
     document.addEventListener("keyup", this._handleKeyEvent.bind(this))
   }

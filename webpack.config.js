@@ -5,13 +5,18 @@ const CopyPlugin = require('copy-webpack-plugin')
 const distFolder = path.join(__dirname, 'dist')
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src/index.js'),
+  entry: path.resolve(__dirname, 'src/index.ts'),
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      },
       {
         type: 'javascript/auto',
         test: /\.(json)$/, //Yes, we import json files as direct references because GAMES
@@ -28,7 +33,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.json', '.css', '.png']
+    extensions: ['.ts', '.js', '.json', '.css', '.png']
   },
   devtool: 'eval-source-map',
   devServer: {

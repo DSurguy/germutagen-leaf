@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import map1 from './staticMaps/1';
-import { sharedKeyboard } from './keyboard/keyboard.js'
+import { sharedKeyboard } from './keyboard/keyboard'
 
 const baseTileProperties = {
   passable: true
@@ -14,12 +14,16 @@ const tileProperties = {
   'o': Object.assign({}, baseTileProperties)
 }
 
-const framesets = {}
+const framesets = {
+  tiles: undefined as any
+}
 const player = {
   position: {
     x: 7,
     y: 2
-  }
+  },
+  lastPosition: undefined as any,
+  sprite: undefined as any
 }
 let currentMap = map1.tiles;
 
