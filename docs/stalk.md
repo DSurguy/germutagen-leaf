@@ -1,0 +1,15 @@
+## Stalk Generation Rules
+- Stalks will generally appear straight, but must have chunks that are offset to generate a more organic look
+  - The stalk must be at least 2 internal spaces wide to allow for the offsets
+  - Offsets must overlap at least one tile of non-wall space to allow for traversal
+  - Offsets must cycle through offset direction.
+    - The first chunk must be centered
+    - The second chunk can be to the left or right
+    - The third chunk must be centered again
+    - The fourth chunk should be opposite the second
+    - Repeat ad infinitum
+- The first chunk must have a base within 10% of the bottom of the map, inclusive
+- Chunks should become thinner and shorter the further away they are from the base
+  - Chunks should taper in size randomly, so they may be all the same size
+- Chunks have a minimum internal size of 2x3, which is 4x5 when you include the walls.
+- The stalk must be between 50-90% of the available map height

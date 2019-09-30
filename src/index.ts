@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import map1 from './staticMaps/1';
 import { sharedKeyboard } from './keyboard/keyboard'
+import generateMapRooms from 'dungeon/generateMapRooms';
 
 const baseTileProperties = {
   passable: true
@@ -28,6 +29,7 @@ const player = {
 let currentMap = map1.tiles;
 
 function initStatics(){
+  console.log(generateMapRooms(120, 200));
   buildFramesets();
 }
 

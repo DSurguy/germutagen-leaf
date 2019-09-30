@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const distFolder = path.join(__dirname, 'dist')
 
@@ -33,7 +34,8 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json', '.css', '.png']
+    extensions: ['.ts', '.js', '.json', '.css', '.png'],
+    plugins: [new TsconfigPathsPlugin()]
   },
   devtool: 'eval-source-map',
   devServer: {
